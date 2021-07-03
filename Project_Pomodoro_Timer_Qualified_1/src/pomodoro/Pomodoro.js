@@ -73,7 +73,7 @@ function Pomodoro() {
             }
             return setSession(nextTick);
         },
-        isTimerRunning ? 1000 : null
+        isTimerRunning ? 10 : null
     );
 
     /**
@@ -119,8 +119,10 @@ function Pomodoro() {
                                 data-testid="decrease-focus"
                                 disabled={session}
                                 onClick={() =>
-                                    setFocusDuration(
-                                        (focusDuration) => focusDuration - 5
+                                    setFocusDuration((focusDuration) =>
+                                        focusDuration > 5
+                                            ? focusDuration - 5
+                                            : focusDuration
                                     )
                                 }
                             >
@@ -133,8 +135,10 @@ function Pomodoro() {
                                 data-testid="increase-focus"
                                 disabled={session}
                                 onClick={() =>
-                                    setFocusDuration(
-                                        (focusDuration) => focusDuration + 5
+                                    setFocusDuration((focusDuration) =>
+                                        focusDuration < 60
+                                            ? focusDuration + 5
+                                            : focusDuration
                                     )
                                 }
                             >
@@ -162,8 +166,10 @@ function Pomodoro() {
                                     data-testid="decrease-break"
                                     disabled={session}
                                     onClick={() =>
-                                        setBreakDuration(
-                                            (breakDuration) => breakDuration - 1
+                                        setBreakDuration((breakDuration) =>
+                                            breakDuration > 1
+                                                ? breakDuration - 1
+                                                : breakDuration
                                         )
                                     }
                                 >
@@ -176,8 +182,10 @@ function Pomodoro() {
                                     data-testid="increase-break"
                                     disabled={session}
                                     onClick={() =>
-                                        setBreakDuration(
-                                            (breakDuration) => breakDuration + 1
+                                        setBreakDuration((breakDuration) =>
+                                            breakDuration < 15
+                                                ? breakDuration + 1
+                                                : breakDuration
                                         )
                                     }
                                 >
@@ -210,13 +218,14 @@ function Pomodoro() {
                                 })}
                             />
                         </button>
-                        {/* TODO: Implement stopping the current focus or break session. and disable the stop button when there is no active session */}
+                        {/* TODO: Implement stopping the current focus or break session. and disable the stop button when there is no active session*/}
                         {/* TODO: Disable the stop button when there is no active session DONE*/}
                         <button
                             type="button"
                             className="btn btn-secondary"
                             data-testid="stop"
                             title="Stop the session"
+                            // onClick={setSession(!session)}
                             disabled={!session}
                         >
                             <span className="oi oi-media-stop" />
