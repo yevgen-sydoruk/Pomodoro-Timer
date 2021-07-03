@@ -243,7 +243,10 @@ function Pomodoro() {
                                 {/* TODO: Update message below to include current session (Focusing or On Break) total duration DONE*/}
                                 <h2 data-testid="session-title">
                                     {session?.label} for{" "}
-                                    {minutesToDuration(focusDuration)} minutes
+                                    {session?.label === "Focusing"
+                                        ? minutesToDuration(focusDuration)
+                                        : minutesToDuration(breakDuration)}{" "}
+                                    minutes
                                 </h2>
                                 {/* TODO: Update message below correctly format the time remaining in the current session  DONE*/}
                                 <p
