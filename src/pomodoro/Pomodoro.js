@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import classNames from "../utils/class-names";
 import useInterval from "../utils/useInterval";
 import FocusDurationControl from "../utils/PomodoroComponents/FocusDurationControl";
 import BreakDurationControl from "../utils/PomodoroComponents/BreakDurationControl";
