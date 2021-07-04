@@ -65,7 +65,7 @@ function Pomodoro() {
      */
     useInterval(
         () => {
-            if (session.timeRemaining === 0) {
+            if (session?.timeRemaining === 0) {
                 new Audio(
                     "https://bigsoundbank.com/UPLOAD/mp3/1482.mp3"
                 ).play();
@@ -73,7 +73,7 @@ function Pomodoro() {
             }
             return setSession(nextTick);
         },
-        isTimerRunning ? 10 : null
+        isTimerRunning ? 1000 : null
     );
 
     /**
@@ -119,10 +119,12 @@ function Pomodoro() {
                                 data-testid="decrease-focus"
                                 disabled={session}
                                 onClick={() =>
-                                    setFocusDuration((focusDuration) =>
-                                        focusDuration > 5
-                                            ? focusDuration - 5
-                                            : focusDuration
+                                    setFocusDuration(
+                                        (focusDuration) =>
+                                            Math.max(focusDuration - 5, 5)
+                                        // focusDuration > 5
+                                        //     ? focusDuration - 5
+                                        //     : focusDuration
                                     )
                                 }
                             >
@@ -135,10 +137,12 @@ function Pomodoro() {
                                 data-testid="increase-focus"
                                 disabled={session}
                                 onClick={() =>
-                                    setFocusDuration((focusDuration) =>
-                                        focusDuration < 60
-                                            ? focusDuration + 5
-                                            : focusDuration
+                                    setFocusDuration(
+                                        (focusDuration) =>
+                                            Math.min(focusDuration + 5, 60)
+                                        // focusDuration < 60
+                                        //     ? focusDuration + 5
+                                        //     : focusDuration
                                     )
                                 }
                             >
@@ -166,10 +170,12 @@ function Pomodoro() {
                                     data-testid="decrease-break"
                                     disabled={session}
                                     onClick={() =>
-                                        setBreakDuration((breakDuration) =>
-                                            breakDuration > 1
-                                                ? breakDuration - 1
-                                                : breakDuration
+                                        setBreakDuration(
+                                            (breakDuration) =>
+                                                Math.max(breakDuration - 1, 1)
+                                            // breakDuration > 1
+                                            //     ? breakDuration - 1
+                                            //     : breakDuration
                                         )
                                     }
                                 >
@@ -182,10 +188,12 @@ function Pomodoro() {
                                     data-testid="increase-break"
                                     disabled={session}
                                     onClick={() =>
-                                        setBreakDuration((breakDuration) =>
-                                            breakDuration < 15
-                                                ? breakDuration + 1
-                                                : breakDuration
+                                        setBreakDuration(
+                                            (breakDuration) =>
+                                                Math.min(breakDuration + 1, 15)
+                                            // breakDuration < 15
+                                            //     ? breakDuration + 1
+                                            //     : breakDuration
                                         )
                                     }
                                 >
@@ -225,7 +233,10 @@ function Pomodoro() {
                             className="btn btn-secondary"
                             data-testid="stop"
                             title="Stop the session"
-                            // onClick={setSession(!session)}
+                            onClick={() => {
+                                setIsTimerRunning(false);
+                                setSession(null);
+                            }}
                             disabled={!session}
                         >
                             <span className="oi oi-media-stop" />
@@ -269,8 +280,28 @@ function Pomodoro() {
                                         role="progressbar"
                                         aria-valuemin="0"
                                         aria-valuemax="100"
-                                        aria-valuenow="0" // TODO: Increase aria-valuenow as elapsed time increases
-                                        style={{ width: "0%" }} // TODO: Increase width % as elapsed time increases
+                                        aria-valuenow={`${
+                                            (1 -
+                                                session.timeRemaining /
+                                                    ((session?.label ===
+                                                    "Focusing"
+                                                        ? focusDuration
+                                                        : breakDuration) *
+                                                        60)) *
+                                            100
+                                        }`} // TODO: Increase aria-valuenow as elapsed time increases DONE
+                                        style={{
+                                            width: `${
+                                                (1 -
+                                                    session.timeRemaining /
+                                                        ((session?.label ===
+                                                        "Focusing"
+                                                            ? focusDuration
+                                                            : breakDuration) *
+                                                            60)) *
+                                                100
+                                            }%`,
+                                        }} // TODO: Increase width % as elapsed time increases DONE
                                     />
                                 </div>
                             </div>
